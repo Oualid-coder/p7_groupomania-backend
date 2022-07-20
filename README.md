@@ -1,4 +1,5 @@
 
+faire un npm i dans le dossier backend et le dossier groupomaniaFront 
 
 
 Démarrer le server : `cd backend` + `npm start`
