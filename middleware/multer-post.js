@@ -1,5 +1,6 @@
 const multer= require('multer')
 const path=require('path')
+const PostModel = require("../models/post.model");
 // const { uploadErrors } = require("../utils/errors.utils");
 
 
@@ -16,12 +17,14 @@ const storage =multer.diskStorage({
 
     destination:(req,file,cb)=>{
 
-        cb(null,'images')
+        cb(null,'publications')
     },
     filename:(req,file,cb)=>{
 
-        const name=file.originalname.split(' ').join('_');
+        const name=file.originalname.split(' ').join('_');;
+
         const extension=MIME_TYPES[file.mimetype];
+
         cb(null, name)
     }
 
@@ -29,7 +32,7 @@ const storage =multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) =>{
-    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype==="image/jpg" &&file.size > 500000){
+    if(file.mimetype === "image/jpeg" || file.mimetype === "image/png" || file.mimetype==="image/jpg" ){
 
         cb(null, true)
     } else {
