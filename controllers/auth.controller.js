@@ -2,6 +2,7 @@ const UserModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const { signUpErrors, signInErrors } = require('../utils/errors.utils');
 
+// nombre de jours ou le token est valide 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
 // la fonction create token prend en parametre l'id du user
@@ -32,6 +33,7 @@ module.exports.signIn = async (req, res) => {
     const user = await UserModel.login(email, password);
     // token contien l'id de l utilisateur et aussi la clé secrete et le traitement de JWT pour avoir l'unicité du token
     const token = createToken(user._id);
+    // nom du cookie +le token + caractéristique: consultable que par notre  serveur avc httponly + maxage
     res.cookie('jwt', token, { httpOnly: true, maxAge});
     res.status(200).json({ user: user._id})
   } catch (err){
@@ -41,6 +43,7 @@ module.exports.signIn = async (req, res) => {
 }
 
 module.exports.logout = (req, res) => {
+  //on enleve le cookie
   res.cookie('jwt', '', { maxAge: 1 });
   res.redirect('/');
 }

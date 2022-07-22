@@ -25,7 +25,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
 // jwt
+// pour n'importe quelle route on check via le middleware les sécurité la connexion de l'utilisateur 
 app.get('*', checkUser);
+//pour que l'utilisateur n'aura pas a se connecter  a chaque fois 
 app.get('/jwtid', requireAuth, (req, res) => {
   res.status(200).send(res.locals.user._id)
 });
