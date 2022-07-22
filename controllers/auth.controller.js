@@ -4,8 +4,9 @@ const { signUpErrors, signInErrors } = require('../utils/errors.utils');
 
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 
+// la fonction create token prend en parametre l'id du user
 const createToken = (id) => {
-  return jwt.sign({id,isAdmin:this.isAdmin}, process.env.TOKEN_SECRET, {
+  return jwt.sign({id}, process.env.TOKEN_SECRET, {
     expiresIn: maxAge
   })
 };
@@ -24,10 +25,12 @@ module.exports.signUp = async (req, res) => {
 }
 
 module.exports.signIn = async (req, res) => {
+  // destructuring
   const { email, password } = req.body
 
   try {
     const user = await UserModel.login(email, password);
+    // token contien l'id de l utilisateur et aussi la clé secrete et le traitement de JWT pour avoir l'unicité du token
     const token = createToken(user._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge});
     res.status(200).json({ user: user._id})

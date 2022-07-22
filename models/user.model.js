@@ -30,16 +30,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "./uploads/profil/random-user.png"
     },
-    bio :{
-      type: String,
-      max: 1024,
-    },
-    followers: {
-      type: [String]
-    },
-    following: {
-      type: [String]
-    },
+ 
     likes: {
       type: [String]
     }
@@ -53,8 +44,9 @@ const userSchema = new mongoose.Schema(
 }
 );
 
-// play function before save into display: 'block',
+
 userSchema.pre("save", async function(next) {
+  //on sale le mt d passe pour sécurisé
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   next();
@@ -63,6 +55,7 @@ userSchema.pre("save", async function(next) {
 userSchema.statics.login = async function(email, password) {
   const user = await this.findOne({ email });
   if (user) {
+    // désalé pour comparer le mt de passe que l'on passe en argument dans l 'input avec l'email en bdd
     const auth = await bcrypt.compare(password, user.password);
     if (auth) {
       return user;
